@@ -11,7 +11,7 @@ export default function Page() {
     <div className="flex items-center justify-center min-h-svh">
       <div className="flex flex-col items-center justify-center gap-4">
         <h1 className="text-2xl font-bold">Web App</h1>
-        <button onClick={() => addUser({ name: "Tom" + Math.random() })}>
+        <button onClick={() => addUser({ name: `Tom-${Date.now()}` })}>
           Add User
         </button>
         <p>Users data: {JSON.stringify(getUsers, null, 2)}</p>
