@@ -18,7 +18,7 @@ export const add = mutation({
     // Check if user is authenticated
     const identity = await ctx.auth.getUserIdentity();
     if (identity === null) {
-      throw new Error("Not authenticated!");
+      throw new Error("Unauthenticated");
     }
 
     const user = await ctx.db.insert("users", {

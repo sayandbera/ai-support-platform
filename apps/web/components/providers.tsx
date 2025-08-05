@@ -52,7 +52,7 @@ function ThemedClerkProvider({ children }: { children: React.ReactNode }) {
         baseTheme: isDark ? dark : undefined,
         variables: {
           colorPrimary: isDark ? "white" : "black",
-          colorPrimaryForeground: isDark ? "#000000" : "#ffffff",
+          colorPrimaryForeground: isDark ? "black" : "white",
         },
       }}
     >
