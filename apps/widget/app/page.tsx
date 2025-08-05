@@ -1,13 +1,16 @@
-import { subtract } from "@workspace/math/subtract";
-import { Button } from "@workspace/ui/components/button";
+"use client";
+
+import { api } from "@workspace/backend/_generated/api";
+import { useQuery } from "convex/react";
 
 export default function Page() {
+  const getUsers = useQuery(api.users.getMany);
+
   return (
     <div className="flex items-center justify-center min-h-svh">
       <div className="flex flex-col items-center justify-center gap-4">
         <h1 className="text-2xl font-bold">Widget App</h1>
-        <p>Subtraction: {subtract(30, 3)}</p>
-        <Button size="sm">Button</Button>
+        <p>Users data: {JSON.stringify(getUsers, null, 2)}</p>
       </div>
     </div>
   );
