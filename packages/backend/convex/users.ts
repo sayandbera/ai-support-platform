@@ -20,7 +20,7 @@ export const add = mutation({
       throw new Error("Unauthenticated");
     }
 
-    const orgID = identity.org_id as string;
+    const orgID = identity.org_id;
     if (!orgID) {
       throw new Error("Missing organization");
     }

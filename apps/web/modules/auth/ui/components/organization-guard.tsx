@@ -10,7 +10,15 @@ interface Props {
 }
 
 export const OrganizationGuard = ({ children }: Props) => {
-  const { organization } = useOrganization();
+  const { organization, isLoaded } = useOrganization();
+
+  if (!isLoaded) {
+    return (
+      <AuthLayout>
+        <p>Loading...</p>
+      </AuthLayout>
+    );
+  }
 
   if (!organization) {
     return (
@@ -20,5 +28,5 @@ export const OrganizationGuard = ({ children }: Props) => {
     );
   }
 
-  return <div>{children}</div>;
+  return <>{children}</>;
 };
