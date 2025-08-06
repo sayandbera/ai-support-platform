@@ -15,10 +15,14 @@ export const add = mutation({
     name: v.string(),
   },
   handler: async (ctx, args) => {
-    // Check if user is authenticated
     const identity = await ctx.auth.getUserIdentity();
     if (identity === null) {
       throw new Error("Unauthenticated");
+    }
+
+    const orgID = identity.org_id;
+    if (!orgID) {
+      throw new Error("Missing organization");
     }
 
     const user = await ctx.db.insert("users", {
