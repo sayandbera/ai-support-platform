@@ -110,9 +110,9 @@ export const DashboardSidebar = () => {
                   rootBox: "w-full! h-8!",
                   avatarBox: "size-4!",
                   organizationSwitcherTrigger:
-                    "w-full! p-2! rounded-md! justify-start! hover:bg-sidebar-accent! hover:text-sidebar-accent-foreground! group-data-[collapsible=icon]:size-8! group-data-[collapsible=icon]:p-2! group-data-[collapsible=icon]:justify-center!",
+                    "w-full! p-2! rounded-md! justify-start! hover:bg-sidebar-accent/40! group-data-[collapsible=icon]:size-8! group-data-[collapsible=icon]:p-2! group-data-[collapsible=icon]:justify-center!",
                   organizationPreview:
-                    "gap-2!  group-data-[collapsible=icon]:justify-center!",
+                    "gap-2! group-data-[collapsible=icon]:justify-center!",
                   organizationPreviewTextContainer:
                     "text-xs! font-medium! text-sidebar-foreground! group-data-[collapsible=icon]:hidden!",
                   organizationSwitcherTriggerIcon:
@@ -130,20 +130,28 @@ export const DashboardSidebar = () => {
             <SidebarGroupLabel>{section.title}</SidebarGroupLabel>
             <SidebarGroupContent>
               <SidebarMenu>
-                {section.navItems.map((item) => (
-                  <SidebarMenuItem key={item.title}>
-                    <SidebarMenuButton
-                      asChild
-                      tooltip={item.title}
-                      isActive={isActive(item.url)}
-                    >
-                      <Link href={item.url}>
-                        <item.icon />
-                        <span>{item.title}</span>
-                      </Link>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                ))}
+                {section.navItems.map((item) => {
+                  const isActivePath = isActive(item.url);
+                  return (
+                    <SidebarMenuItem key={item.title}>
+                      <SidebarMenuButton
+                        asChild
+                        tooltip={item.title}
+                        isActive={isActivePath}
+                        className={cn(
+                          "hover:bg-sidebar-accent/40!",
+                          isActivePath &&
+                            "bg-gradient-to-r! from-sidebar-accent! via-sidebar-accent! to-sidebar!"
+                        )}
+                      >
+                        <Link href={item.url}>
+                          <item.icon />
+                          <span>{item.title}</span>
+                        </Link>
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
+                  );
+                })}
               </SidebarMenu>
             </SidebarGroupContent>
           </SidebarGroup>
@@ -154,22 +162,20 @@ export const DashboardSidebar = () => {
       <SidebarFooter>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton asChild size="lg">
-              <UserButton
-                showName={true}
-                appearance={{
-                  elements: {
-                    rootBox: "w-full! h-8!",
-                    userButtonTrigger:
-                      "w-full! p-2! rounded-md! hover:bg-sidebar-accent! hover:text-sidebar-accent-foreground! group-data-[collapsible=icon]:size-8!",
-                    userButtonBox:
-                      "w-full! flex-row-reverse! justify-end! gap-2! group-data-[collapsible=icon]:justify-center! text-sidebar-foreground!",
-                    userButtonOuterIdentifier:
-                      "pl-0! group-data-[collapsible=icon]:hidden",
-                  },
-                }}
-              />
-            </SidebarMenuButton>
+            <UserButton
+              showName={true}
+              appearance={{
+                elements: {
+                  rootBox: "w-full! h-8!",
+                  userButtonTrigger:
+                    "w-full! p-2! rounded-md! hover:bg-sidebar-accent/40! group-data-[collapsible=icon]:size-8!",
+                  userButtonBox:
+                    "w-full! flex-row-reverse! justify-end! gap-2! group-data-[collapsible=icon]:justify-center! text-sidebar-foreground!",
+                  userButtonOuterIdentifier:
+                    "pl-0! group-data-[collapsible=icon]:hidden!",
+                },
+              }}
+            />
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarFooter>
