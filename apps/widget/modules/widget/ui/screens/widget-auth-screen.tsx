@@ -7,7 +7,6 @@ import { z } from "zod";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -81,7 +80,7 @@ export const WidgetAuthScreen = () => {
           <FormField
             control={form.control}
             name="name"
-            render={({ field }: { field: any }) => (
+            render={({ field }) => (
               <FormItem>
                 <FormLabel>Name</FormLabel>
                 <FormControl>
@@ -99,7 +98,7 @@ export const WidgetAuthScreen = () => {
           <FormField
             control={form.control}
             name="email"
-            render={({ field }: { field: any }) => (
+            render={({ field }) => (
               <FormItem>
                 <FormLabel>Email</FormLabel>
                 <FormControl>

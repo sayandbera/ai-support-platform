@@ -3,6 +3,7 @@
 import * as React from "react";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
 import { ConvexReactClient, ConvexProvider } from "convex/react";
+import { Provider } from "jotai";
 
 const convexUrl = process.env.NEXT_PUBLIC_CONVEX_URL;
 if (!convexUrl) {
@@ -22,7 +23,9 @@ export function Providers({ children }: { children: React.ReactNode }) {
       disableTransitionOnChange
       enableColorScheme
     >
-      <ConvexProvider client={convexClient}>{children}</ConvexProvider>
+      <ConvexProvider client={convexClient}>
+        <Provider>{children}</Provider>
+      </ConvexProvider>
     </NextThemesProvider>
   );
 }
