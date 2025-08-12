@@ -1,10 +1,10 @@
 import { v } from "convex/values";
-import { action, mutation, query } from "../_generated/server";
+import { action } from "../_generated/server";
 import { createClerkClient } from "@clerk/backend";
 
-const clerkClient = createClerkClient({
-  secretKey: process.env.CLERK_SECRET_KEY || "",
-});
+const clerkSecretKey = process.env.CLERK_SECRET_KEY;
+if (!clerkSecretKey) throw new Error("CLERK_SECRET_KEY must be set");
+const clerkClient = createClerkClient({ secretKey: clerkSecretKey });
 
 export const validate = action({
   args: {
@@ -12,7 +12,7 @@ export const validate = action({
   },
   handler: async (_, args) => {
     try {
-      const organization = await clerkClient.organizations.getOrganization({
+      await clerkClient.organizations.getOrganization({
         organizationId: args.orgId,
       });
 

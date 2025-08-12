@@ -111,7 +111,7 @@ export const WidgetLoadingScreen = ({ orgId }: Props) => {
 
     const hasValidSession = contactSessionId && sessionValid;
     setScreen(hasValidSession ? "selection" : "auth");
-  }, [step, contactSessionId, sessionValid]);
+  }, [step, contactSessionId, sessionValid, setScreen]);
 
   return (
     <>
