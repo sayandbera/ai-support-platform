@@ -9,4 +9,4 @@ export const WIDGET_SCREENS = [
   "contact",
 ] as const;
 
-export const CONTACT_SESSION_KEY = "ai-support-platform-contact-session";
+export const CONTACT_SESSION_KEY = "ai_support_platform_contact_session";

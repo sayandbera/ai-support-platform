@@ -1,5 +1,5 @@
 import { v } from "convex/values";
-import { mutation, query } from "../_generated/server";
+import { mutation } from "../_generated/server";
 
 const SESSION_DURATION = 24 * 60 * 60 * 1000;
 
@@ -38,5 +38,22 @@ export const create = mutation({
     });
 
     return contactSessionId;
+  },
+});
+
+export const validate = mutation({
+  args: {
+    contactSessionId: v.id("contactSessions"),
+  },
+  handler: async (ctx, args) => {
+    const contactSession = await ctx.db.get(args.contactSessionId);
+
+    if (!contactSession) {
+      return { valid: false, reason: "Contact session not found" };
+    } else if (contactSession.expiresAt < Date.now()) {
+      return { valid: false, reason: "Contact session expired" };
+    }
+
+    return { valid: true, contactSession };
   },
 });
