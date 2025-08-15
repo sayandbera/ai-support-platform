@@ -15,9 +15,7 @@ export const ConversationsLayout = ({ children }: LayoutProps) => {
       <ResizablePanel defaultSize={30} maxSize={30} minSize={20}>
         <ConversationsPanel />
       </ResizablePanel>
-
       <ResizableHandle />
-
       <ResizablePanel className="h-full" defaultSize={70}>
         {children}
       </ResizablePanel>
