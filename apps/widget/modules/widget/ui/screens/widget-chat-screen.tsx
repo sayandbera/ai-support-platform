@@ -8,6 +8,7 @@ import { Form, FormField } from "@workspace/ui/components/form";
 import {
   AIConversation,
   AIConversationContent,
+  AIConversationScrollButton,
 } from "@workspace/ui/components/ai/conversation";
 import {
   AIMessage,
@@ -119,7 +120,7 @@ export const WidgetChatScreen = () => {
         </Button>
       </WidgetHeader>
 
-      <AIConversation>
+      <AIConversation className="max-h-[calc(100vh-180px)]">
         <AIConversationContent>
           <InfiniteScrollTrigger
             canLoadMore={canLoadMore}
@@ -146,6 +147,7 @@ export const WidgetChatScreen = () => {
             </AIMessage>
           ))}
         </AIConversationContent>
+        <AIConversationScrollButton />
       </AIConversation>
 
       {/* TODO: Add AI suggestions */}
