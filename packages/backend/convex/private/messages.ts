@@ -4,6 +4,51 @@ import { components, internal } from "../_generated/api";
 import { supportAgent } from "../system/ai/agents/supportAgent";
 import { paginationOptsValidator } from "convex/server";
 import { saveMessage } from "@convex-dev/agent";
+import { generateText } from "ai";
+import { google } from "@ai-sdk/google";
+
+export const enhanceResponse = action({
+  args: {
+    prompt: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (identity === null) {
+      throw new ConvexError({
+        code: "UNAUTHORIZED",
+        message: "Identity not found",
+      });
+    }
+
+    // we have added the org_id field inside the convex JWT template in clerk
+    const orgId = identity.org_id as string;
+    if (!orgId) {
+      throw new ConvexError({
+        code: "UNAUTHORIZED",
+        message: "Organization not found!",
+      });
+    }
+
+    const response = await generateText({
+      // Use gemini-1.5-flash-latest for the best balance of speed, cost, and quality for this task.
+      model: google("gemini-2.0-flash-lite"),
+      messages: [
+        {
+          role: "system",
+          content:
+            "Enhance and refine a support agent's draft message response to the user's or their customer's input. \n\nRULES:\n1. Preserve the original meaning and all key information (like names, ticket numbers, or specific steps) perfectly.\n2. Enhance the tone to be more professional, polite, and empathetic.\n3. Your output MUST be ONLY the revised text. Do not add any conversational filler, explanations, or introductory phrases like 'Here is the enhanced version:'.",
+        },
+        {
+          role: "user",
+          content: args.prompt,
+        },
+      ],
+      temperature: 0.1,
+    });
+
+    return response.text;
+  },
+});
 
 export const create = mutation({
   args: {
