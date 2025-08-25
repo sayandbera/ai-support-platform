@@ -64,7 +64,7 @@ export const addFIle = action({
       title: filename,
       metadata: {
         storageId,
-        uploadedBy: orgId, // Impotent for deletion
+        uploadedBy: orgId, // Important for deletion
         filename,
         category: category ?? null,
       },
