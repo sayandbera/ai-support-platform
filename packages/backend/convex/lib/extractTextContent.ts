@@ -7,7 +7,7 @@ import { assert } from "convex-helpers";
 const AI_MODELS = {
   image: google.chat("gemini-2.5-flash"),
   pdf: google.chat("gemini-2.5-flash"),
-  html: google.chat("gemini-2.5-flash"), // Use the model with the URL tool
+  html: google.chat("gemini-2.5-flash-lite"), // Use the model with the URL tool
 } as const;
 
 const SUPPORTED_IMAGE_TYPE = [
@@ -99,8 +99,8 @@ async function extractTextFileContent(
   mimeType: string,
   bytes: ArrayBuffer | undefined
 ): Promise<string> {
-  const blob = await ctx.storage.get(storageId);
-  const arrayBuffer = bytes || (await blob?.arrayBuffer());
+  const arrayBuffer =
+    bytes || (await (await ctx.storage.get(storageId))?.arrayBuffer());
 
   if (!arrayBuffer) {
     throw new Error("Failed to get file content");
