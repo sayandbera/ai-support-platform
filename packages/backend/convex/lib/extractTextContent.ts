@@ -38,7 +38,7 @@ export async function extractTextContent(
   const { filename, mimeType, storageId, bytes } = args;
 
   const url = await ctx.storage.getUrl(storageId);
-  assert(url, "Failed to get the storage URL");
+  assert(url, "Failed to get the storage URL"); // convex utility function
 
   if (SUPPORTED_IMAGE_TYPE.some((type) => type === mimeType)) {
     return extractImageText(url);

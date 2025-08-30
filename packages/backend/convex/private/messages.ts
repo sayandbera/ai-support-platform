@@ -6,6 +6,7 @@ import { paginationOptsValidator } from "convex/server";
 import { saveMessage } from "@convex-dev/agent";
 import { generateText } from "ai";
 import { google } from "@ai-sdk/google";
+import { OPERATOR_MESSAGE_ENHANCEMENT_PROMPT } from "../lib/constants";
 
 export const enhanceResponse = action({
   args: {
@@ -31,12 +32,12 @@ export const enhanceResponse = action({
 
     const response = await generateText({
       // Use gemini-1.5-flash-latest for the best balance of speed, cost, and quality for this task.
-      model: google("gemini-2.0-flash-lite"),
+      model: google("gemini-2.5-flash-lite"),
       messages: [
         {
           role: "system",
-          content:
-            "Enhance and refine a support agent's draft message response to the user's or their customer's input. \n\nRULES:\n1. Preserve the original meaning and all key information (like names, ticket numbers, or specific steps) perfectly.\n2. Enhance the tone to be more professional, polite, and empathetic.\n3. Your output MUST be ONLY the revised text. Do not add any conversational filler, explanations, or introductory phrases like 'Here is the enhanced version:'.",
+          content: OPERATOR_MESSAGE_ENHANCEMENT_PROMPT,
+          // "Enhance and refine a support agent's draft message response to the user's or their customer's input. \n\nRULES:\n1. Preserve the original meaning and all key information (like names, ticket numbers, or specific steps) perfectly.\n2. Enhance the tone to be more professional, polite, and empathetic.\n3. Your output MUST be ONLY the revised text. Do not add any conversational filler, explanations, or introductory phrases like 'Here is the enhanced version:'.",
         },
         {
           role: "user",
