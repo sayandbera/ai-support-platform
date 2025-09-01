@@ -22,7 +22,7 @@ export const CustomizationView = () => {
   }
 
   return (
-    <div className="flex- min-h-screen flex-col bg-muted p-8">
+    <div className="flex min-h-screen flex-col bg-muted p-8">
       <div className="w-full max-w-screen-md mx-auto">
         <div className="space-y-2">
           <h1 className="text-2xl md:text-4xl">Widget Customization</h1>

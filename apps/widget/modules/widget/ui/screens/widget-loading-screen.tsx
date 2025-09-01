@@ -8,10 +8,11 @@ import {
   loadingMessageAtom,
   orgIdAtom,
   screenAtom,
+  widgetSettingsAtom,
 } from "../../atoms/widget-atoms";
 import { WidgetHeader } from "../components/widget-header";
 import { LoaderIcon } from "lucide-react";
-import { useAction, useMutation } from "convex/react";
+import { useAction, useMutation, useQuery } from "convex/react";
 import { api } from "@workspace/backend/_generated/api";
 
 type InitStep = "org" | "session" | "settings" | "vapi" | "done";
@@ -27,6 +28,7 @@ export const WidgetLoadingScreen = ({ orgId }: Props) => {
   const setErrorMessage = useSetAtom(errorMessageAtom);
   const setOrgId = useSetAtom(orgIdAtom);
   const setScreen = useSetAtom(screenAtom);
+  const setWidgetSettings = useSetAtom(widgetSettingsAtom);
 
   const contactSessionId = useAtomValue(
     contactSessionIdAtomFamily(orgId || "")
@@ -87,7 +89,7 @@ export const WidgetLoadingScreen = ({ orgId }: Props) => {
 
     if (!contactSessionId) {
       setSessionValid(false);
-      setStep("done");
+      setStep("settings");
       return;
     }
 
@@ -96,13 +98,31 @@ export const WidgetLoadingScreen = ({ orgId }: Props) => {
     validateContactSession({ contactSessionId })
       .then((result) => {
         setSessionValid(result.valid);
-        setStep("done");
+        setStep("settings");
       })
       .catch(() => {
         setSessionValid(false);
         setStep("settings");
       });
   }, [step, contactSessionId, validateContactSession, setLoadingMessage]);
+
+  // STEP 3: Load widget settings
+  const widgetSettings = useQuery(
+    api.public.widgetSettings.getByOrgId,
+    orgId ? { orgId } : "skip"
+  );
+  useEffect(() => {
+    if (step !== "settings") {
+      return;
+    }
+
+    setLoadingMessage("Loading widget settings...");
+
+    if (widgetSettings !== undefined) {
+      setWidgetSettings(widgetSettings);
+      setStep("done");
+    }
+  }, [step, setStep, widgetSettings, setWidgetSettings, setLoadingMessage]);
 
   useEffect(() => {
     if (step !== "done") {

@@ -138,7 +138,7 @@ export const CustomizationForm = ({
                         <FormControl>
                           <Input
                             {...field}
-                            placeholder="e.g., Ho do I get started?"
+                            placeholder="e.g., How do I get started?"
                           />
                         </FormControl>
                         <FormMessage />

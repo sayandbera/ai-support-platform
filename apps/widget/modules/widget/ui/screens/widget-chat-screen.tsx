@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useMemo } from "react";
 import { WidgetHeader } from "../components/widget-header";
 import { ArrowLeftIcon, MenuIcon } from "lucide-react";
 import { Button } from "@workspace/ui/components/button";
@@ -14,6 +14,10 @@ import {
   AIMessage,
   AIMessageContent,
 } from "@workspace/ui/components/ai/message";
+import {
+  AISuggestion,
+  AISuggestions,
+} from "@workspace/ui/components/ai/suggestion";
 import {
   AIInput,
   AIInputSubmit,
@@ -31,6 +35,7 @@ import {
   conversationIdAtom,
   orgIdAtom,
   screenAtom,
+  widgetSettingsAtom,
 } from "../../atoms/widget-atoms";
 import { useAction, useQuery } from "convex/react";
 import { api } from "@workspace/backend/_generated/api";
@@ -48,6 +53,7 @@ export const WidgetChatScreen = () => {
   const [conversationId, setConversationId] = useAtom(conversationIdAtom);
 
   const orgId = useAtomValue(orgIdAtom);
+  const widgetSettings = useAtomValue(widgetSettingsAtom);
   const contactSessionId = useAtomValue(
     contactSessionIdAtomFamily(orgId || "")
   );
@@ -56,6 +62,20 @@ export const WidgetChatScreen = () => {
     setConversationId(null);
     setScreen("selection");
   };
+
+  const suggestions = useMemo(() => {
+    if (!widgetSettings) {
+      return [];
+    }
+
+    // Transform the objects into an array
+    return Object.keys(widgetSettings.defaultSuggestions).map(
+      (key) =>
+        widgetSettings.defaultSuggestions[
+          key as keyof typeof widgetSettings.defaultSuggestions
+        ]
+    );
+  }, [widgetSettings]);
 
   const conversation = useQuery(
     api.public.conversations.getOne,
@@ -150,7 +170,32 @@ export const WidgetChatScreen = () => {
         <AIConversationScrollButton />
       </AIConversation>
 
-      {/* TODO: Add AI suggestions */}
+      {/* Add AI suggestions */}
+      {toUIMessages(messages.results ?? []).length === 1 && (
+        <AISuggestions className="flex w-full p-2 overflow-x-auto">
+          {suggestions.map((suggestion) => {
+            if (!suggestion) {
+              return null;
+            }
+
+            return (
+              <AISuggestion
+                key={suggestion}
+                suggestion={suggestion}
+                onClick={() => {
+                  form.setValue("message", suggestion, {
+                    shouldValidate: true,
+                    shouldDirty: true,
+                    shouldTouch: true,
+                  });
+                  form.handleSubmit(onSubmit)();
+                }}
+              />
+            );
+          })}
+        </AISuggestions>
+      )}
+
       <Form {...form}>
         <AIInput
           className="rounded-none border-x-0 border-b-0"
