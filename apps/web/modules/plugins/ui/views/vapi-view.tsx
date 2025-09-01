@@ -32,6 +32,7 @@ import {
 import { Label } from "@workspace/ui/components/label";
 import { Input } from "@workspace/ui/components/input";
 import { Button } from "@workspace/ui/components/button";
+import { VapiConnectedView } from "../components/vapi-connected-view";
 
 const vapiFeatures: Feature[] = [
   {
@@ -159,17 +160,60 @@ const VapiPluginForm = ({
   );
 };
 
+const VapiPluginDisconnectDialog = ({
+  open,
+  setOpen,
+}: {
+  open: boolean;
+  setOpen: (value: boolean) => void;
+}) => {
+  const removePlugin = useMutation(api.private.plugins.remove);
+
+  const onDisconnect = async () => {
+    try {
+      await removePlugin({
+        service: "vapi",
+      });
+
+      setOpen(false);
+      toast.success("Vapi is disconnected!");
+    } catch (error) {
+      console.error(error);
+      toast.error("Something went wrong!");
+    }
+  };
+
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Disconnect Vapi</DialogTitle>
+          <DialogDescription>
+            Are you sure you want to disconnect the Vapi plugin?
+          </DialogDescription>
+        </DialogHeader>
+
+        <DialogFooter>
+          <Button onClick={onDisconnect} variant="destructive">
+            Disconnect
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+};
+
 export const VapiView = () => {
   const [connectDialogOpen, setConnectDialogOpen] = React.useState(false);
-  const [removeDialogOpen, setRemoveDialogOpen] = React.useState(false);
+  const [disconnectDialogOpen, setDisconnectDialogOpen] = React.useState(false);
 
   const vapiPlugin = useQuery(api.private.plugins.getOne, {
     service: "vapi",
   });
 
-  const handleSUbmit = () => {
+  const toggleConnection = () => {
     if (vapiPlugin) {
-      setRemoveDialogOpen(true);
+      setDisconnectDialogOpen(true);
     } else {
       setConnectDialogOpen(true);
     }
@@ -183,6 +227,10 @@ export const VapiView = () => {
   return (
     <>
       <VapiPluginForm open={connectDialogOpen} setOpen={setConnectDialogOpen} />
+      <VapiPluginDisconnectDialog
+        open={disconnectDialogOpen}
+        setOpen={setDisconnectDialogOpen}
+      />
 
       <div className="flex min-h-screen flex-col bg-muted p-8">
         <div className="mx-auto w-full max-w-screen-md">
@@ -195,14 +243,14 @@ export const VapiView = () => {
 
           <div className="mt-8">
             {vapiPlugin ? (
-              <p>Connected!!</p>
+              <VapiConnectedView onDisconnect={toggleConnection} />
             ) : (
               <PluginCard
                 serviceName="Vapi"
                 serviceImage="/vapi.jpg"
                 features={vapiFeatures}
                 isDisabled={vapiPlugin === undefined} // undefined means it is loading
-                onSubmit={handleSUbmit}
+                onSubmit={toggleConnection}
               />
             )}
           </div>

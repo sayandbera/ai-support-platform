@@ -172,14 +172,14 @@ export const ConversationIdView = ({
             onLoadMore={handleLoadMore}
             ref={topElementRef}
           />
-          {toUIMessages(messages.results ?? [])?.map((message) => (
+          {toUIMessages(messages.results ?? []).map((message) => (
             <AIMessage
-              key={message.id}
+              key={message.key}
               //   In reverse, because we are watching from "assistance" perspective
               from={message.role === "user" ? "assistant" : "user"}
             >
               <AIMessageContent>
-                <AIResponse>{message.content}</AIResponse>
+                <AIResponse>{message.text}</AIResponse>
               </AIMessageContent>
 
               {message.role === "user" && (

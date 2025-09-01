@@ -128,13 +128,13 @@ export const WidgetChatScreen = () => {
             onLoadMore={handleLoadMore}
             ref={topElementRef}
           />
-          {toUIMessages(messages.results ?? [])?.map((message) => (
+          {toUIMessages(messages.results ?? []).map((message) => (
             <AIMessage
-              key={message.id}
+              key={message.key}
               from={message.role === "user" ? "user" : "assistant"}
             >
               <AIMessageContent>
-                <AIResponse>{message.content}</AIResponse>
+                <AIResponse>{message.text}</AIResponse>
               </AIMessageContent>
 
               {message.role === "assistant" && (

@@ -9,10 +9,10 @@ interface Props {
   }>;
 }
 
-const page = ({ searchParams }: Props) => {
+const Page = ({ searchParams }: Props) => {
   const { orgId } = use(searchParams);
 
   return <WidgetView orgId={orgId} />;
 };
 
-export default page;
+export default Page;

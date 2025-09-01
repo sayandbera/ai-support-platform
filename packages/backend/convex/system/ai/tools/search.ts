@@ -8,15 +8,12 @@ import { supportAgent } from "../agents/supportAgent";
 import { SEARCH_INTERPRETER_PROMPT } from "../../../lib/constants";
 
 export const search = createTool({
-  description: SEARCH_INTERPRETER_PROMPT,
+  description:
+    "Search the knowledge base for relevant information to help answer the user's question.",
   args: z.object({
-    query: z
-      .string()
-      .describe(
-        "The search query to find relevant information in the knowledge base"
-      ),
+    query: z.string().describe("The search query to find relevant information"),
   }),
-  handler: async (ctx, args) => {
+  handler: async (ctx, { query }) => {
     if (!ctx.threadId) {
       return "Missing thread ID!";
     }
@@ -34,7 +31,7 @@ export const search = createTool({
 
     const searchResult = await rag.search(ctx, {
       namespace: orgId,
-      query: args.query,
+      query: query,
       limit: 5,
     });
 
@@ -48,12 +45,11 @@ export const search = createTool({
       messages: [
         {
           role: "system",
-          content:
-            "You interpret knowledge-base search results and provide helpful, accurate answer to user questions",
+          content: SEARCH_INTERPRETER_PROMPT,
         },
         {
           role: "user",
-          content: `User asked: "${args.query}"\n\nSearch results: ${contextText}`,
+          content: `User asked: "${query}"\n\nSearch results: ${contextText}`,
         },
       ],
     });
