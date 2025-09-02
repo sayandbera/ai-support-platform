@@ -2,28 +2,10 @@
 
 import React, { useState } from "react";
 import { WidgetHeader } from "../components/widget-header";
-import {
-  ArrowLeftIcon,
-  CheckIcon,
-  CopyIcon,
-  MicIcon,
-  MicOffIcon,
-  PhoneIcon,
-} from "lucide-react";
+import { ArrowLeftIcon, CheckIcon, CopyIcon, PhoneIcon } from "lucide-react";
 import { Button } from "@workspace/ui/components/button";
 import { useAtomValue, useSetAtom } from "jotai";
 import { screenAtom, widgetSettingsAtom } from "../../atoms/widget-atoms";
-import { useVapi } from "@/modules/widget/hooks/use-vapi";
-import { cn } from "@workspace/ui/lib/utils";
-import {
-  AIConversation,
-  AIConversationContent,
-  AIConversationScrollButton,
-} from "@workspace/ui/components/ai/conversation";
-import {
-  AIMessage,
-  AIMessageContent,
-} from "@workspace/ui/components/ai/message";
 import Link from "next/link";
 
 export const WidgetContactScreen = () => {
