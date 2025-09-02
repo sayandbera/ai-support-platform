@@ -64,14 +64,15 @@ export const useVapi = () => {
   }, []);
 
   const startCall = () => {
-    if (!vapiSecrets || !widgetSettings?.vapiSettings?.assistantId) {
+    const assistantId = widgetSettings?.vapiSettings?.assistantId;
+    if (!vapiSecrets || !assistantId) {
       return;
     }
 
     setIsConnecting(true);
 
     if (vapi) {
-      vapi.start(vapiSecrets?.publicApiKey);
+      vapi.start(assistantId);
     }
   };
 

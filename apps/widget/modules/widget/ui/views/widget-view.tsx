@@ -1,8 +1,6 @@
 "use client";
 
 import React from "react";
-// import { WidgetFooter } from "../components/widget-footer";
-// import { WidgetHeader } from "../components/widget-header";
 import { WidgetAuthScreen } from "../screens/widget-auth-screen";
 import { useAtomValue } from "jotai";
 import { screenAtom } from "../../atoms/widget-atoms";
@@ -12,6 +10,7 @@ import { WidgetSelectionScreen } from "../screens/widget-selection-screen";
 import { WidgetChatScreen } from "../screens/widget-chat-screen";
 import { WidgetInboxScreen } from "../screens/widget-Inbox-screen";
 import { WidgetVoiceScreen } from "../screens/widget-voice-screen";
+import { WidgetContactScreen } from "../screens/widget-contact-screen";
 
 interface Props {
   orgId: string;
@@ -28,11 +27,11 @@ export const WidgetView = ({ orgId }: Props) => {
     auth: <WidgetAuthScreen />,
     inbox: <WidgetInboxScreen />,
     chat: <WidgetChatScreen />,
-    contact: <p>TODO: Contact</p>,
+    contact: <WidgetContactScreen />,
   };
 
   return (
-    <main className="flex flex-col h-full w-full min-h-screen overflow-hidden rounded-xl border bg-muted">
+    <main className="flex flex-col h-full w-full overflow-hidden rounded-xl border bg-muted">
       {screenComponents[screen]}
     </main>
   );

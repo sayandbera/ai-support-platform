@@ -4,16 +4,8 @@ import React from "react";
 import { WidgetHeader } from "../components/widget-header";
 import { ArrowLeftIcon, MicIcon, MicOffIcon } from "lucide-react";
 import { Button } from "@workspace/ui/components/button";
-import { useAtom, useAtomValue, useSetAtom } from "jotai";
-import {
-  contactSessionIdAtomFamily,
-  conversationIdAtom,
-  orgIdAtom,
-  screenAtom,
-} from "../../atoms/widget-atoms";
-import { useQuery } from "convex/react";
-import { api } from "@workspace/backend/_generated/api";
-import { useThreadMessages } from "@convex-dev/agent/react";
+import { useSetAtom } from "jotai";
+import { screenAtom } from "../../atoms/widget-atoms";
 import { useVapi } from "@/modules/widget/hooks/use-vapi";
 import { cn } from "@workspace/ui/lib/utils";
 import {
@@ -50,14 +42,10 @@ export const WidgetVoiceScreen = () => {
           </Button>
           <p>Voice Chat</p>
         </div>
-
-        {/* <Button size="icon" variant="transparent">
-          <MenuIcon />
-        </Button> */}
       </WidgetHeader>
 
       {transcript.length > 0 ? (
-        <AIConversation className="h-full flex-1">
+        <AIConversation className="h-full">
           <AIConversationContent>
             {transcript.map((message, index) => (
               <AIMessage
