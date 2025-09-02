@@ -20,3 +20,5 @@ export const errorMessageAtom = atom<string | null>(null);
 export const loadingMessageAtom = atom<string | null>(null);
 
 export const widgetSettingsAtom = atom<Doc<"widgetSettings"> | null>(null);
+export const vapiSecretAtom = atom<{ publicApiKey: string } | null>(null);
+export const hasVapiSecretsAtom = atom((get) => get(vapiSecretAtom) !== null);

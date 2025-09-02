@@ -3,14 +3,21 @@
 import React from "react";
 import { WidgetHeader } from "../components/widget-header";
 import { Button } from "@workspace/ui/components/button";
-import { ChevronRightIcon, MessageSquareTextIcon } from "lucide-react";
+import {
+  ChevronRightIcon,
+  MessageSquareTextIcon,
+  MicIcon,
+  PhoneIcon,
+} from "lucide-react";
 import { useAtomValue, useSetAtom } from "jotai";
 import {
   contactSessionIdAtomFamily,
   conversationIdAtom,
   errorMessageAtom,
+  hasVapiSecretsAtom,
   orgIdAtom,
   screenAtom,
+  widgetSettingsAtom,
 } from "../../atoms/widget-atoms";
 import { useMutation } from "convex/react";
 import { api } from "@workspace/backend/_generated/api";
@@ -22,6 +29,8 @@ export const WidgetSelectionScreen = () => {
   const setConversationId = useSetAtom(conversationIdAtom);
 
   const orgId = useAtomValue(orgIdAtom);
+  const widgetSettings = useAtomValue(widgetSettingsAtom);
+  const hasVapiSecrets = useAtomValue(hasVapiSecretsAtom);
   const contactSessionId = useAtomValue(
     contactSessionIdAtomFamily(orgId || "")
   );
@@ -75,6 +84,40 @@ export const WidgetSelectionScreen = () => {
           </div>
           <ChevronRightIcon />
         </Button>
+
+        {hasVapiSecrets && widgetSettings?.vapiSettings?.assistantId && (
+          <Button
+            className="h-16 w-full justify-between"
+            variant="outline"
+            disabled={isPending}
+            onClick={() => {
+              setScreen("voice");
+            }}
+          >
+            <div className="flex items-center gap-x-2">
+              <MicIcon />
+              <span>Start Voice Call</span>
+            </div>
+            <ChevronRightIcon />
+          </Button>
+        )}
+
+        {hasVapiSecrets && widgetSettings?.vapiSettings?.phoneNumber && (
+          <Button
+            className="h-16 w-full justify-between"
+            variant="outline"
+            disabled={isPending}
+            onClick={() => {
+              setScreen("contact");
+            }}
+          >
+            <div className="flex items-center gap-x-2">
+              <PhoneIcon />
+              <span>Call Us</span>
+            </div>
+            <ChevronRightIcon />
+          </Button>
+        )}
       </div>
 
       <WidgetFooter />
