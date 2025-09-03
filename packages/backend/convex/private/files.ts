@@ -12,6 +12,7 @@ import { extractTextContent } from "../lib/extractTextContent";
 import rag from "../system/ai/rag";
 import { Id } from "../_generated/dataModel";
 import { paginationOptsValidator } from "convex/server";
+import { internal } from "../_generated/api";
 
 export type PublicFile = {
   id: EntryId;
@@ -52,6 +53,18 @@ export const addFile = action({
       throw new ConvexError({
         code: "UNAUTHORIZED",
         message: "Organization not found!",
+      });
+    }
+
+    const subscriptions = await ctx.runQuery(
+      internal.system.subscriptions.getByOrgId,
+      { orgId }
+    );
+
+    if (subscriptions?.status !== "active") {
+      throw new ConvexError({
+        code: "BAD_REQUEST",
+        message: "No active pro subscription found!",
       });
     }
 

@@ -30,6 +30,18 @@ export const enhanceResponse = action({
       });
     }
 
+    const subscriptions = await ctx.runQuery(
+      internal.system.subscriptions.getByOrgId,
+      { orgId }
+    );
+
+    if (subscriptions?.status !== "active") {
+      throw new ConvexError({
+        code: "BAD_REQUEST",
+        message: "No active pro subscription found!",
+      });
+    }
+
     const response = await generateText({
       // Use gemini-1.5-flash-latest for the best balance of speed, cost, and quality for this task.
       model: google("gemini-2.5-flash-lite"),

@@ -35,6 +35,7 @@ import { ConversationStatusButton } from "../components/conversation-status-butt
 import { InfiniteScrollTrigger } from "@workspace/ui/components/infinite-scroll-trigger";
 import { cn } from "@workspace/ui/lib/utils";
 import { Skeleton } from "@workspace/ui/components/skeleton";
+import { toast } from "sonner";
 
 interface ConversationIdViewProps {
   conversationId: Id<"conversations">;
@@ -85,7 +86,8 @@ export const ConversationIdView = ({
       });
 
       form.setValue("message", response);
-    } catch (error) {
+    } catch (error: any) {
+      toast.error(error.data.message || "Something went wrong!");
       console.error(error);
     } finally {
       setIsEnhancing(false);
