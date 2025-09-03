@@ -64,5 +64,10 @@ export default defineSchema({
     }),
   }).index("by_org_id", ["orgId"]),
 
+  subscriptions: defineTable({
+    orgId: v.string(),
+    status: v.string(),
+  }).index("by_org_id", ["orgId"]),
+
   users: defineTable({ name: v.string() }),
 });

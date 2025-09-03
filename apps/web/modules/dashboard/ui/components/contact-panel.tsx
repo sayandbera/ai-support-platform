@@ -36,27 +36,6 @@ export const ContactPanel = () => {
     conversationId ? { conversationId } : "skip"
   );
 
-  //   const parseUserAgent = React.useMemo(() => {
-  //     return (userAgent?: string) => {
-  //       if (!userAgent) {
-  //         return { browser: "Unknown", os: "Unknown", device: "Unknown" };
-  //       }
-
-  //       const browser = Bowser.getParser(userAgent);
-  //       const result = browser.getResult();
-
-  //       return {
-  //         browser: result.browser.name || "Unknown",
-  //         browserVersion: result.browser.version || "",
-  //         os: result.os.name || "Unknown",
-  //         osVersion: result.os.version || "",
-  //         device: result.platform.type || "desktop",
-  //         deviceVendor: result.platform.vendor || "",
-  //         deviceModel: result.platform.model || "",
-  //       };
-  //     };
-  //   }, []);
-
   const parseUserAgent = React.useCallback((userAgent?: string) => {
     if (!userAgent) {
       return { browser: "Unknown", os: "Unknown", device: "Unknown" };
