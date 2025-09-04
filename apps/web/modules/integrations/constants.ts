@@ -23,10 +23,10 @@ const INTEGRATIONS = [
 
 type IntegrationID = (typeof INTEGRATIONS)[number]["id"];
 
-const HTML_SCRIPT = `<script src="http://localhost:3001/widget.js" data-organization-id="{{ORGANIZATION_ID}}"></script>`;
-const REACT_SCRIPT = `<script src="http://localhost:3001/widget.js" data-organization-id="{{ORGANIZATION_ID}}"></script>`;
-const NEXTJS_SCRIPT = `<script src="http://localhost:3001/widget.js" data-organization-id="{{ORGANIZATION_ID}}"></script>`;
-const JAVASCRIPT_SCRIPT = `<script src="http://localhost:3001/widget.js" data-organization-id="{{ORGANIZATION_ID}}"></script>`;
+const HTML_SCRIPT = `<script src="https://ai-support-platform-widget-xi.vercel.app/widget.js" data-organization-id="{{ORGANIZATION_ID}}"></script>`;
+const REACT_SCRIPT = `<script src="https://ai-support-platform-widget-xi.vercel.app/widget.js" data-organization-id="{{ORGANIZATION_ID}}"></script>`;
+const NEXTJS_SCRIPT = `<script src="https://ai-support-platform-widget-xi.vercel.app/widget.js" data-organization-id="{{ORGANIZATION_ID}}"></script>`;
+const JAVASCRIPT_SCRIPT = `<script src="https://ai-support-platform-widget-xi.vercel.app/widget.js" data-organization-id="{{ORGANIZATION_ID}}"></script>`;
 
 export {
   INTEGRATIONS,
